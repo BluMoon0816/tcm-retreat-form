@@ -301,7 +301,11 @@
 </div>
 
 <main>
-<form id="retreatForm" novalidate>
+<form id="retreatForm" novalidate action="https://formsubmit.co/drzhengnan6@gmail.com" method="POST">
+  <input type="hidden" name="_cc" value="abluspace@gmail.com" />
+  <input type="hidden" name="_subject" value="New TCM Wellness Retreat Registration" />
+  <input type="hidden" name="_captcha" value="false" />
+  <input type="hidden" name="_template" value="table" />
 
   <!-- ── Section 1: Registration ── -->
   <div class="form-section" data-section="1">
@@ -569,11 +573,11 @@
     </div>
   </div>
 
-  <!-- ── Section 5: Goals & Post-Retreat ── -->
+  <!-- ── Section 5: Goals ── -->
   <div class="form-section" data-section="5">
     <div class="section-header">
       <div class="section-icon">✨</div>
-      <h2 class="section-title">Retreat Goals & Feedback</h2>
+      <h2 class="section-title">Retreat Goals</h2>
     </div>
 
     <div class="field">
@@ -593,40 +597,6 @@
     <div class="field">
       <label>Is there anything specific you'd like practitioners to focus on during your stay?</label>
       <textarea name="focusAreas" placeholder="Share any concerns, intentions, or areas of focus…"></textarea>
-    </div>
-
-    <div class="post-retreat-note">
-      📝 The questions below are for <strong>post-retreat completion</strong>. You may leave them blank now and submit them after your stay.
-    </div>
-
-    <div class="field">
-      <label>Overall experience rating</label>
-      <div class="star-group">
-        <input type="radio" name="rating" id="s5" value="5"/><label for="s5">★</label>
-        <input type="radio" name="rating" id="s4" value="4"/><label for="s4">★</label>
-        <input type="radio" name="rating" id="s3" value="3"/><label for="s3">★</label>
-        <input type="radio" name="rating" id="s2" value="2"/><label for="s2">★</label>
-        <input type="radio" name="rating" id="s1" value="1"/><label for="s1">★</label>
-      </div>
-    </div>
-
-    <div class="field">
-      <label>Which activities or treatments did you find most beneficial?</label>
-      <textarea name="beneficial" placeholder="e.g. morning qi gong, herbal consultations…"></textarea>
-    </div>
-
-    <div class="field">
-      <label>Would you recommend this retreat to others?</label>
-      <div class="radio-group">
-        <label><input type="radio" name="recommend" value="yes" /> Yes</label>
-        <label><input type="radio" name="recommend" value="maybe" /> Maybe</label>
-        <label><input type="radio" name="recommend" value="no" /> No</label>
-      </div>
-    </div>
-
-    <div class="field">
-      <label>Additional comments or suggestions</label>
-      <textarea name="comments" placeholder="Any other thoughts you'd like to share…" style="min-height:110px;"></textarea>
     </div>
   </div>
 
@@ -686,23 +656,24 @@
 
   // Submit
   document.getElementById('retreatForm').addEventListener('submit', function(e) {
-    e.preventDefault();
     const required = this.querySelectorAll('[required]');
     let valid = true;
+    let firstInvalid = null;
     required.forEach(field => {
       if (!field.value.trim()) {
         field.style.borderColor = 'var(--error)';
+        if (!firstInvalid) firstInvalid = field;
         valid = false;
-        field.scrollIntoView({ behavior: 'smooth', block: 'center' });
       } else {
         field.style.borderColor = '';
       }
     });
-    if (!valid) return;
-    this.style.display = 'none';
-    document.getElementById('successScreen').style.display = 'block';
-    document.querySelector('.progress-wrap').style.display = 'none';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!valid) {
+      e.preventDefault();
+      firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    // Valid — let the form POST to FormSubmit naturally
   });
 </script>
 </body>
