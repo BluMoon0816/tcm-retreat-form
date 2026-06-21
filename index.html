@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TCM Wellness Retreat — Participant Form</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:       #1c2b22;
+      --moss:      #3d5c40;
+      --sage:      #7a9e7e;
+      --mist:      #d6e8d4;
+      --parchment: #f5f2eb;
+      --gold:      #b5873a;
+      --white:     #ffffff;
+      --border:    #c8d9c6;
+      --error:     #9b3a2a;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--parchment);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--moss);
+      color: var(--white);
+      text-align: center;
+      padding: 56px 24px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 60% 0%, rgba(181,135,58,.18) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .header-eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 14px;
+    }
+    header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    header h1 em { font-style: italic; color: #c9dfc7; }
+    header p {
+      font-size: 14px;
+      color: #b8ceb6;
+      max-width: 440px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── Progress bar ── */
+    .progress-wrap {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .progress-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .progress-label { font-size: 12px; color: var(--sage); white-space: nowrap; }
+    .progress-bar-bg {
+      flex: 1;
+      height: 4px;
+      background: var(--mist);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--gold);
+      border-radius: 2px;
+      width: 0%;
+      transition: width .4s ease;
+    }
+
+    /* ── Main ── */
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── Section ── */
+    .form-section {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 36px 40px;
+      margin-bottom: 28px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--mist);
+    }
+    .section-icon {
+      width: 38px; height: 38px;
+      background: var(--mist);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem;
+      font-weight: 400;
+      color: var(--moss);
+    }
+
+    /* ── Fields ── */
+    .field { margin-bottom: 22px; }
+    .field:last-child { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 7px;
+    }
+    .required { color: var(--gold); margin-left: 3px; }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 7px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--ink);
+      background: var(--white);
+      transition: border-color .2s, box-shadow .2s;
+      appearance: none;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--sage);
+      box-shadow: 0 0 0 3px rgba(122,158,126,.15);
+    }
+    textarea { resize: vertical; min-height: 90px; }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a9e7e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+
+    /* Radio & checkbox groups */
+    .radio-group, .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .radio-group label, .checkbox-group label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 400;
+      font-size: 14px;
+      cursor: pointer;
+      margin: 0;
+    }
+    input[type="radio"], input[type="checkbox"] {
+      width: 17px; height: 17px;
+      accent-color: var(--moss);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* Two-col layout */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    @media (max-width: 540px) { .two-col { grid-template-columns: 1fr; } }
+
+    /* Hint text */
+    .hint { font-size: 12px; color: var(--sage); margin-top: 5px; }
+
+    /* Conditional reveal */
+    .conditional { display: none; margin-top: 10px; }
+    .conditional.show { display: block; }
+
+    /* ── Submit ── */
+    .submit-section { text-align: center; margin-top: 10px; }
+    .submit-btn {
+      background: var(--moss);
+      color: var(--white);
+      border: none;
+      padding: 16px 56px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: .03em;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background .2s, transform .15s;
+    }
+    .submit-btn:hover { background: #2e4530; transform: translateY(-1px); }
+    .submit-btn:active { transform: translateY(0); }
+    .submit-note { font-size: 12px; color: var(--sage); margin-top: 12px; }
+
+    /* ── Success ── */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 80px 24px;
+    }
+    .success-icon {
+      width: 72px; height: 72px;
+      background: var(--mist);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 30px;
+      margin: 0 auto 24px;
+    }
+    .success-screen h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--moss);
+      margin-bottom: 12px;
+    }
+    .success-screen p { color: var(--sage); line-height: 1.7; }
+
+    /* Star rating */
+    .star-group { display: flex; gap: 6px; }
+    .star-group input[type="radio"] { display: none; }
+    .star-group label {
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--border);
+      transition: color .15s;
+      margin: 0;
+    }
+    .star-group input[type="radio"]:checked ~ label,
+    .star-group label:hover,
+    .star-group label:hover ~ label { color: var(--gold); }
+    .star-group { flex-direction: row-reverse; justify-content: flex-end; }
+
+    /* Post-retreat notice */
+    .post-retreat-note {
+      background: var(--mist);
+      border-left: 3px solid var(--sage);
+      padding: 10px 14px;
+      border-radius: 0 6px 6px 0;
+      font-size: 13px;
+      color: var(--moss);
+      margin-bottom: 22px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-eyebrow">Week-Long Programme · Participant Form</div>
+  <h1>TCM Wellness<br/><em>Retreat</em></h1>
+  <p>Please complete all sections carefully. Your responses help our practitioners prepare a personalised experience for you.</p>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-inner">
+    <span class="progress-label" id="progressLabel">Section 1 of 5</span>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+  </div>
+</div>
+
+<main>
+<form id="retreatForm" novalidate>
+
+  <!-- ── Section 1: Registration ── -->
+  <div class="form-section" data-section="1">
+    <div class="section-header">
+      <div class="section-icon">🌿</div>
+      <h2 class="section-title">Registration</h2>
+    </div>
+
+    <div class="two-col">
+      <div class="field">
+        <label>Full Name <span class="required">*</span></label>
+        <input type="text" name="fullName" placeholder="As on your ID" required />
+      </div>
+      <div class="field">
+        <label>Date of Birth <span class="required">*</span></label>
+        <input type="date" name="dob" required />
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="field">
+        <label>Email Address <span class="required">*</span></label>
+        <input type="email" name="email" placeholder="you@example.com" required />
+      </div>
+      <div class="field">
+        <label>Phone Number <span class="required">*</span></label>
+        <input type="tel" name="phone" placeholder="+65 9000 0000" required />
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="field">
+        <label>Emergency Contact Name & Relationship</label>
+        <input type="text" name="emergencyName" placeholder="e.g. Jane Doe (Sister)" />
+      </div>
+      <div class="field">
+        <label>Emergency Contact Phone</label>
+        <input type="tel" name="emergencyPhone" placeholder="+65 9000 0000" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Have you attended a TCM retreat before?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="prevRetreat" value="yes" /> Yes</label>
+        <label><input type="radio" name="prevRetreat" value="no" /> No</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>How did you hear about this retreat?</label>
+      <select name="hearAbout">
+        <option value="" disabled selected>Select one</option>
+        <option>Friend or family referral</option>
+        <option>Social media</option>
+        <option>Website / search engine</option>
+        <option>TCM practitioner recommendation</option>
+        <option>Newsletter or email</option>
+        <option>Other</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ── Section 2: Health History ── -->
+  <div class="form-section" data-section="2">
+    <div class="section-header">
+      <div class="section-icon">📋</div>
+      <h2 class="section-title">Health History</h2>
+    </div>
+
+    <div class="field">
+      <label>Do you have any diagnosed medical conditions? <span class="required">*</span></label>
+      <div class="radio-group">
+        <label><input type="radio" name="conditions" value="yes" onchange="toggleConditional(this,'conditionsDetail')" required /> Yes</label>
+        <label><input type="radio" name="conditions" value="no" onchange="toggleConditional(this,'conditionsDetail')" /> No</label>
+      </div>
+      <div class="conditional" id="conditionsDetail">
+        <textarea name="conditionsDetail" placeholder="Please list your conditions…"></textarea>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Are you currently taking any medications or supplements?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="medications" value="yes" onchange="toggleConditional(this,'medicationsDetail')" /> Yes</label>
+        <label><input type="radio" name="medications" value="no" onchange="toggleConditional(this,'medicationsDetail')" /> No</label>
+      </div>
+      <div class="conditional" id="medicationsDetail">
+        <textarea name="medicationsDetail" placeholder="Please list medications and dosages…"></textarea>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Any surgeries or hospitalisations in the past 5 years?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="surgeries" value="yes" onchange="toggleConditional(this,'surgeriesDetail')" /> Yes</label>
+        <label><input type="radio" name="surgeries" value="no" onchange="toggleConditional(this,'surgeriesDetail')" /> No</label>
+      </div>
+      <div class="conditional" id="surgeriesDetail">
+        <textarea name="surgeriesDetail" placeholder="Please describe…"></textarea>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Are you currently pregnant or breastfeeding?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="pregnancy" value="yes" /> Yes</label>
+        <label><input type="radio" name="pregnancy" value="no" /> No</label>
+        <label><input type="radio" name="pregnancy" value="na" /> Not applicable</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Any physical limitations or mobility concerns we should know about?</label>
+      <textarea name="mobility" placeholder="e.g. knee injury, difficulty with floor exercises…"></textarea>
+    </div>
+  </div>
+
+  <!-- ── Section 3: TCM Assessment ── -->
+  <div class="form-section" data-section="3">
+    <div class="section-header">
+      <div class="section-icon">☯️</div>
+      <h2 class="section-title">TCM Health Assessment</h2>
+    </div>
+
+    <div class="field">
+      <label>How would you describe your general energy levels?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="energy" value="always-tired" /> Always tired</label>
+        <label><input type="radio" name="energy" value="often-tired" /> Often tired</label>
+        <label><input type="radio" name="energy" value="moderate" /> Moderate</label>
+        <label><input type="radio" name="energy" value="generally-energetic" /> Generally energetic</label>
+        <label><input type="radio" name="energy" value="very-energetic" /> Very energetic</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>How is your sleep quality?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="sleep" value="poor" /> Poor</label>
+        <label><input type="radio" name="sleep" value="fair" /> Fair</label>
+        <label><input type="radio" name="sleep" value="good" /> Good</label>
+        <label><input type="radio" name="sleep" value="excellent" /> Excellent</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Do you experience any of the following? <span class="hint">(Select all that apply)</span></label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="symptoms" value="cold-hands-feet" /> Cold hands or feet</label>
+        <label><input type="checkbox" name="symptoms" value="night-sweats" /> Night sweats</label>
+        <label><input type="checkbox" name="symptoms" value="bloating" /> Frequent bloating</label>
+        <label><input type="checkbox" name="symptoms" value="low-appetite" /> Low appetite</label>
+        <label><input type="checkbox" name="symptoms" value="anxiety" /> Anxiety or overthinking</label>
+        <label><input type="checkbox" name="symptoms" value="irritability" /> Irritability</label>
+        <label><input type="checkbox" name="symptoms" value="brain-fog" /> Brain fog</label>
+        <label><input type="checkbox" name="symptoms" value="palpitations" /> Palpitations</label>
+        <label><input type="checkbox" name="symptoms" value="none" /> None of the above</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Do you tend to feel more cold or hot?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="tempTendency" value="always-cold" /> Always cold</label>
+        <label><input type="radio" name="tempTendency" value="often-cold" /> Often cold</label>
+        <label><input type="radio" name="tempTendency" value="neutral" /> Neutral</label>
+        <label><input type="radio" name="tempTendency" value="often-warm" /> Often warm</label>
+        <label><input type="radio" name="tempTendency" value="always-hot" /> Always hot</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>How is your digestion?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="digestion" value="slow" /> Slow or sluggish</label>
+        <label><input type="radio" name="digestion" value="normal" /> Normal</label>
+        <label><input type="radio" name="digestion" value="sensitive" /> Sensitive</label>
+        <label><input type="radio" name="digestion" value="irregular" /> Irregular</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>For women: Are your menstrual cycles regular?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="menstrual" value="regular" /> Regular</label>
+        <label><input type="radio" name="menstrual" value="irregular" /> Irregular</label>
+        <label><input type="radio" name="menstrual" value="na" /> Not applicable</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Have you previously received TCM treatments?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="prevTcm" value="yes" onchange="toggleConditional(this,'prevTcmDetail')" /> Yes</label>
+        <label><input type="radio" name="prevTcm" value="no" onchange="toggleConditional(this,'prevTcmDetail')" /> No</label>
+      </div>
+      <div class="conditional" id="prevTcmDetail">
+        <div class="checkbox-group" style="margin-top:4px;">
+          <label><input type="checkbox" name="tcmTypes" value="acupuncture" /> Acupuncture</label>
+          <label><input type="checkbox" name="tcmTypes" value="cupping" /> Cupping</label>
+          <label><input type="checkbox" name="tcmTypes" value="herbal" /> Herbal medicine</label>
+          <label><input type="checkbox" name="tcmTypes" value="tuina" /> Tui Na massage</label>
+          <label><input type="checkbox" name="tcmTypes" value="moxibustion" /> Moxibustion</label>
+          <label><input type="checkbox" name="tcmTypes" value="other" /> Other</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Section 4: Diet ── -->
+  <div class="form-section" data-section="4">
+    <div class="section-header">
+      <div class="section-icon">🍵</div>
+      <h2 class="section-title">Dietary Preferences & Allergies</h2>
+    </div>
+
+    <div class="field">
+      <label>Do you follow a specific diet?</label>
+      <select name="diet">
+        <option value="" disabled selected>Select one</option>
+        <option>Omnivore</option>
+        <option>Vegetarian</option>
+        <option>Vegan</option>
+        <option>Pescatarian</option>
+        <option>Halal</option>
+        <option>Kosher</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Do you have any food allergies or intolerances?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="allergies" value="yes" onchange="toggleConditional(this,'allergiesDetail')" /> Yes</label>
+        <label><input type="radio" name="allergies" value="no" onchange="toggleConditional(this,'allergiesDetail')" /> No</label>
+      </div>
+      <div class="conditional" id="allergiesDetail">
+        <textarea name="allergiesDetail" placeholder="e.g. peanuts, shellfish, gluten…"></textarea>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Any foods you strongly dislike or avoid for personal reasons?</label>
+      <textarea name="dislikes" placeholder="e.g. mushrooms, bitter melon…"></textarea>
+    </div>
+
+    <div class="two-col">
+      <div class="field">
+        <label>Do you drink alcohol?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="alcohol" value="yes" /> Yes</label>
+          <label><input type="radio" name="alcohol" value="occasionally" /> Occasionally</label>
+          <label><input type="radio" name="alcohol" value="no" /> No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Do you smoke or use tobacco?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="smoking" value="yes" /> Yes</label>
+          <label><input type="radio" name="smoking" value="occasionally" /> Occasionally</label>
+          <label><input type="radio" name="smoking" value="no" /> No</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Section 5: Goals & Post-Retreat ── -->
+  <div class="form-section" data-section="5">
+    <div class="section-header">
+      <div class="section-icon">✨</div>
+      <h2 class="section-title">Retreat Goals & Feedback</h2>
+    </div>
+
+    <div class="field">
+      <label>What are your main goals for this retreat? <span class="hint">(Select all that apply)</span></label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="goals" value="stress-relief" /> Stress relief</label>
+        <label><input type="checkbox" name="goals" value="sleep" /> Improve sleep</label>
+        <label><input type="checkbox" name="goals" value="energy" /> Boost energy</label>
+        <label><input type="checkbox" name="goals" value="detox" /> Detox</label>
+        <label><input type="checkbox" name="goals" value="learn-tcm" /> Learn about TCM</label>
+        <label><input type="checkbox" name="goals" value="emotional" /> Emotional healing</label>
+        <label><input type="checkbox" name="goals" value="weight" /> Weight management</label>
+        <label><input type="checkbox" name="goals" value="other" /> Other</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Is there anything specific you'd like practitioners to focus on during your stay?</label>
+      <textarea name="focusAreas" placeholder="Share any concerns, intentions, or areas of focus…"></textarea>
+    </div>
+
+    <div class="post-retreat-note">
+      📝 The questions below are for <strong>post-retreat completion</strong>. You may leave them blank now and submit them after your stay.
+    </div>
+
+    <div class="field">
+      <label>Overall experience rating</label>
+      <div class="star-group">
+        <input type="radio" name="rating" id="s5" value="5"/><label for="s5">★</label>
+        <input type="radio" name="rating" id="s4" value="4"/><label for="s4">★</label>
+        <input type="radio" name="rating" id="s3" value="3"/><label for="s3">★</label>
+        <input type="radio" name="rating" id="s2" value="2"/><label for="s2">★</label>
+        <input type="radio" name="rating" id="s1" value="1"/><label for="s1">★</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Which activities or treatments did you find most beneficial?</label>
+      <textarea name="beneficial" placeholder="e.g. morning qi gong, herbal consultations…"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Would you recommend this retreat to others?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="recommend" value="yes" /> Yes</label>
+        <label><input type="radio" name="recommend" value="maybe" /> Maybe</label>
+        <label><input type="radio" name="recommend" value="no" /> No</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Additional comments or suggestions</label>
+      <textarea name="comments" placeholder="Any other thoughts you'd like to share…" style="min-height:110px;"></textarea>
+    </div>
+  </div>
+
+  <div class="submit-section">
+    <button type="submit" class="submit-btn">Submit Form</button>
+    <p class="submit-note">Your information is kept confidential and used solely for retreat preparation.</p>
+  </div>
+
+</form>
+
+<div class="success-screen" id="successScreen">
+  <div class="success-icon">🌿</div>
+  <h2>Thank you for completing the form</h2>
+  <p>We look forward to welcoming you to the retreat.<br/>A confirmation will be sent to your email shortly.</p>
+</div>
+</main>
+
+<script>
+  // Progress tracking
+  function updateProgress() {
+    const sections = document.querySelectorAll('.form-section');
+    const total = sections.length;
+    let filled = 0;
+    sections.forEach((sec, i) => {
+      const inputs = sec.querySelectorAll('input, textarea, select');
+      let hasValue = false;
+      inputs.forEach(inp => {
+        if (inp.type === 'radio' || inp.type === 'checkbox') {
+          if (inp.checked) hasValue = true;
+        } else if (inp.value.trim()) hasValue = true;
+      });
+      if (hasValue) filled = i + 1;
+    });
+    const pct = Math.round((filled / total) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = `Section ${Math.min(filled+1, total)} of ${total}`;
+  }
+
+  document.getElementById('retreatForm').addEventListener('input', updateProgress);
+
+  // Conditional reveal
+  function toggleConditional(radio, targetId) {
+    const target = document.getElementById(targetId);
+    if (radio.value === 'yes' && radio.checked) {
+      target.classList.add('show');
+    } else {
+      target.classList.remove('show');
+    }
+  }
+  // Handle all conditional toggles
+  document.querySelectorAll('[onchange]').forEach(el => {
+    el.addEventListener('change', function() {
+      const fn = this.getAttribute('onchange');
+      eval(fn.replace('this,', 'this,'));
+    });
+  });
+
+  // Submit
+  document.getElementById('retreatForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const required = this.querySelectorAll('[required]');
+    let valid = true;
+    required.forEach(field => {
+      if (!field.value.trim()) {
+        field.style.borderColor = 'var(--error)';
+        valid = false;
+        field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        field.style.borderColor = '';
+      }
+    });
+    if (!valid) return;
+    this.style.display = 'none';
+    document.getElementById('successScreen').style.display = 'block';
+    document.querySelector('.progress-wrap').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>
